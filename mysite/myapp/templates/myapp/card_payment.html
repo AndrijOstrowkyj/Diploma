@@ -1,0 +1,74 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="payment">
+    <div class="container">
+        <h2>Оплата карткою</h2>
+
+        <form class="payment-form" method="post" action="{% url 'myapp:place_order' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="card_number">Номер карти:</label>
+                <input type="text" id="card_number" name="card_number" required>
+            </div>
+            <div class="form-group">
+                <label for="expiry_date">Термін дії:</label>
+                <input type="text" id="expiry_date" name="expiry_date" placeholder="MM/YY" required>
+            </div>
+            <div class="form-group">
+                <label for="cvv">CVV код:</label>
+                <input type="text" id="cvv" name="cvv" required>
+            </div>
+            <div class="form-group">
+                <label for="cardholder_name">Ім'я власника карти:</label>
+                <input type="text" id="cardholder_name" name="cardholder_name" required>
+            </div>
+            <button type="submit">Оплатити</button>
+        </form>
+    </div>
+</div>
+
+<style>
+.payment .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.payment h2 {
+    margin-bottom: 20px;
+}
+
+.payment .form-group {
+    margin-bottom: 20px;
+}
+
+.payment .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.payment .form-group input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.payment button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    margin: 0 auto;
+}
+</style>
+{% endblock %}

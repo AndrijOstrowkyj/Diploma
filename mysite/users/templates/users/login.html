@@ -1,0 +1,24 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-wrapper">
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <h2>Увійти</h2>
+
+            <p>Логін <span>(ім'я користувача)</span></p>
+            {{form.username}}
+
+            <p>Пароль </p>
+            {{form.password}}
+
+            <button type="submit">Увійти</button>
+
+            <p>Якщо у вас немає акаунта ви можете - <a href="{% url 'users:register' %}">зареєструватися</a>.</p>
+        </form>
+        
+    </div>
+</div>
+{% endblock %}

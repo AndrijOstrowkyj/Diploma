@@ -1,0 +1,65 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="details">
+    <div class="container">
+        <!-- Мініатюрне зображення товару -->
+        <img src="{{ item.image.url }}" alt="" id="product-image">
+        <div class="details-txt">
+            <!-- Інформація про товар -->
+            <h2>Назва: {{item.name}}</h2>
+            <p>Опис: {{item.description}}</p>
+            <p>Ціна: {{item.price}} $</p>
+            <!-- Форма для додавання товару до кошика -->
+            <form method="post" action="{% url 'myapp:add_to_cart' %}">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ item.id }}">
+                <!-- Кнопка "Замовити" -->
+                <div style="margin-top: 20px;"> <!-- Вбудований стиль для контейнера -->
+                    <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; font-size: 16px;">Замовити</button>
+                </div>
+            </form>
+
+            <!-- Відгуки користувачів -->
+            <div class="details__rev">
+                <!-- Форма для додавання відгуку -->
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'myapp:add_item' %}" class="form-rev">
+                    {% csrf_token %}
+                    <h3>Залишити коментар</h3>
+                    <input type="hidden" name="product_id" readonly value="{{ item.id }}">
+                    <input type="text" name="reviews_txt" placeholder="Коментар" required>
+                    <button type="submit">Зберегти</button>
+                </form>
+                {% else %}
+                <!-- Повідомлення для неавторизованих користувачів -->
+                <p>Будь ласка <a href="{% url 'users:login' %}">увійдіть</a> щоб залишити коментар.</p>
+                {% endif %}
+
+                <!-- Список відгуків -->
+                <div class="rev-list">
+                    <h3>Коментарі</h3>
+                    {% for review in item.reviews_set.all %}
+                    <div class="rev-item">
+                        <p>{{ review.reviews_txt }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS для збільшення зображення при наведенні -->
+<style>
+#product-image {
+    transition: transform 0.3s; /* Додали анімацію для плавного збільшення */
+}
+
+#product-image:hover {
+    transform: scale(1.2); /* Збільшуємо зображення на 20% при наведенні */
+}
+</style>
+
+{% endblock %}

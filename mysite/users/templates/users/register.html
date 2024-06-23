@@ -1,0 +1,38 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-wrapper">
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <h2>Реєстрація</h2>
+            
+            {% if form.errors %}
+                <ul class="errorlist">
+                    {% for field, errors in form.errors.items %}
+                        <li>{{ field }}
+                            <ul class="errorlist">
+                                {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <p>Ім'я користувача</p>
+            {{ form.username }}
+            <p>Емейл</p>
+            {{ form.email }}
+            <p>Пароль</p>
+            {{ form.password1 }}
+            <p>Повторіть пароль</p>
+            {{ form.password2 }}
+            <button type="submit">Зберегти</button>
+            <p>Якщо у вас вже є акаунт ви можете - <a href="{% url 'users:login' %}">увійти</a>.</p>
+        </form>
+    </div>
+</div>
+{% endblock %}

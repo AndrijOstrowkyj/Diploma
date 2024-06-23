@@ -1,0 +1,57 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile" style="text-align: center;"> <!-- Центруємо весь вміст по центру -->
+    <div class="container">
+        <h2>Сторінка користувача</h2>
+
+        {% if user.profile %}
+
+        <div class="profile__details" style="display: inline-block; text-align: center;"> <!-- Центруємо блок та текст -->
+            <div class="profile__details-header">
+                {% if user.profile.image %}
+                <img src="{{ user.profile.image.url }}" alt="" style="display: block; margin: 0 auto; width: 200px; height: 200px; border-radius: 50%;"> <!-- Центруємо та збільшуємо зображення -->
+                {% endif %}
+                <p style="margin-top: 10px;">{{ user.username }}</p> <!-- Ім'я користувача під фото -->
+            </div>
+            <div class="profile__details-txt">
+                <p><b>Контактний номер</b>: {{ user.profile.contact_number }}</p>
+                <p><b>Емейл</b>: {{ user.email }}</p>
+            </div>
+            <a href="{% url 'users:update' %}" class="btn-update">Оновити профіль</a>
+            <a href="{% url 'users:user_orders' %}" class="btn-update">Мої замовлення</a>
+        </div>
+
+        {% else %}
+        <form method="post" enctype="multipart/form-data" style="display: inline-block; text-align: left;"> <!-- Центруємо форму створення профілю -->
+            {% csrf_token %}
+            <label>Додати фото профілю </label>
+            <input type="file" accept="image/*" name="upload" id="upload" required>
+            <label>Контактний номер</label>
+            <input type="text" name="number" id="number">
+
+            <button type="submit">Створити профіль</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Додамо стилі для покращення вигляду -->
+<style>
+.profile__details-header img {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%; /* Зробимо зображення круглим */
+}
+
+.profile__details-header p {
+    margin-top: 10px;
+    font-size: 1.2em; /* Збільшимо розмір шрифту */
+    font-weight: bold;
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="cart" style="text-align: center;">
+    <div class="container">
+        <h2>Ваш кошик</h2>
+        {% if products_in_cart %}
+        <ul style="list-style: none; padding: 0;">
+            {% for product in products_in_cart %}
+                <li style="margin-bottom: 10px;">{{ product.name }} - {{ product.price }} $</li>
+            {% endfor %}
+        </ul>
+        <form class="cart-form" method="post" action="{% url 'myapp:place_order' %}" style="display: inline-block; text-align: left;">
+            {% csrf_token %}
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="first_name">Ім'я:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="last_name">Прізвище:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="phone_number">Номер телефону:</label>
+                <input type="text" id="phone_number" name="phone_number" {% if user.is_authenticated %} value="{{ user.profile.contact_number }}" {% endif %} required>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="post_type">Пошта:</label>
+                <select id="post_type" name="post_type" required>
+                    <option value="Нова пошта">Нова пошта</option>
+                    <option value="Укрпошта">Укрпошта</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="city">Населений пункт:</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="postal_code">Номер пошти:</label>
+                <input type="text" id="postal_code" name="postal_code" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="payment_type">Тип оплати:</label>
+                <select id="payment_type" name="payment_type" required>
+                    <option value="Безготівково">Безготівково</option>
+                    <option value="Оплата при отриманні">Оплата при отриманні</option>
+                </select>
+            </div>
+             <div class="button-container" style="text-align: center;">
+                <button type="submit" id="submit-button" class="order-button">Зробити замовлення</button>
+                <a href="{% url 'myapp:index' %}" class="continue-shopping">Продовжити покупки</a>
+            </div>
+        </form>
+        {% else %}
+        <p>Ваш кошик пустий.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.order-button, .continue-shopping {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px; /* Додаємо відступ між кнопками */
+    transition: text-decoration 0.3s ease; /* Додаємо плавний перехід */
+}
+
+.continue-shopping:hover {
+    text-decoration: underline; /* Додаємо підкреслювання при наведенні */
+}
+.cart .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.cart h2 {
+    margin-bottom: 20px;
+}
+
+.cart ul {
+    list-style: none;
+    padding: 0;
+}
+
+.cart ul li {
+    margin-bottom: 10px;
+}
+
+.cart .form-group {
+    margin-bottom: 20px;
+}
+
+.cart .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.cart .form-group input,
+.cart .form-group select {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.cart button,
+.continue-shopping {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    display: inline-block;
+}
+
+.cart button {
+    margin-right: 10px;
+}
+</style>
+
+{% endblock %}

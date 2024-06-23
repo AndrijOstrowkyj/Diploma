@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/index.css' %}">
+    <style>
+        /* Застосуйте стилі до всіх посилань і кнопок */
+        a,
+        button {
+            background: none;
+            border: none;
+
+
+            cursor: pointer;
+            text-decoration: none; /* Видаліть підкреслення */
+
+        }
+
+        /* Застосуйте підкреслення до посилань і кнопок при наведенні */
+        a:hover,
+        button:hover {
+            text-decoration: underline; /* Додайте підкреслення при наведенні */
+
+        }
+        /* Встановіть відстань між кнопками */
+        nav a:not(:last-child),
+        nav button:not(:last-child) {
+            margin-right: 20px; /* Змініть відстань на ваш розсуд */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="wrapper__top">
+            <header>
+                <div class="container">
+                    <a class="header__logo" href="{% url 'myapp:index' %}">
+                        ОНЛАЙН МАГАЗИН
+                    </a>
+                    <nav>
+                        <a href="{% url 'myapp:index' %}">Головна</a>
+
+                        <a href="{% url 'myapp:contacts' %}">Контакти</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'users:profile' %}">Профіль</a>
+                        <a href="{% url 'myapp:view_cart' %}">Кошик</a>
+                        <form method="post" action="{% url 'users:logout' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">
+                                Вийти
+                            </button>
+                        </form>
+                        {% else %}
+
+                        <a href="{% url 'users:login' %}">Увійти</a>
+                        {% endif %}
+                    </nav>
+                    <div class="header__contact">
+                        <a href="tel: +38 (095) 93-34-123">+38 (095) 93-34-123</a>
+                        <a href="tel: +38 (095) 93-34-123">+38 (095) 93-34-123</a>
+                    </div>
+                </div>
+            </header>
+            <!-- main -->
+            <main>
+                {% block content %}
+                {% endblock content %}
+            </main>
+            <!-- end main -->
+        </div>
+
+        <footer>
+            <div class="container">
+                <p>Студенський сайт. Django 4</p>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+</html>

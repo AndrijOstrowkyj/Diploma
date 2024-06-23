@@ -1,0 +1,87 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile" style="text-align: center;"> <!-- Центруємо весь вміст по центру -->
+    <div class="container">
+        <h2>Оновити сторінку користувача</h2>
+
+        <form class="update-form" method="post" enctype="multipart/form-data" style="display: inline-block; text-align: left;"> <!-- Центруємо форму та текст -->
+            {% csrf_token %}
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{% if form.instance.image %}{{ form.instance.image.url }}{% endif %}"
+                    alt="{{ form.instance.user.username }}" style="width: 200px; height: 200px; border-radius: 50%;"> <!-- Центруємо та збільшуємо зображення -->
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="{{ form.image.id_for_label }}">Фото профілю</label> <!-- Відображаємо лейбл поля українською -->
+                {{ form.image }}
+            </div>
+            {% if form.image.value %} <!-- Перевіряємо, чи існує зображення -->
+            <div class="form-group" style="margin-bottom: 20px;">
+                {{ form.image.clear_checkbox }} <label for="{{ form.image.clear_checkbox_id }}">Видалити існуюче зображення</label> <!-- Додаємо чекбокс для очищення -->
+            </div>
+            {% endif %}
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="{{ form.contact_number.id_for_label }}">Контактний номер</label> <!-- Відображаємо лейбл поля українською -->
+                {{ form.contact_number }}
+            </div>
+            <div style="text-align: center;"> <!-- Центруємо кнопку -->
+                <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; font-size: 16px;">Оновити профіль</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Додамо стилі для покращення вигляду -->
+<style>
+.profile .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.profile h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.update-form img {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.update-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    margin: 0 auto;
+}
+</style>
+{% endblock %}
